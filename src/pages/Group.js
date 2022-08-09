@@ -67,7 +67,29 @@ const Group = () => {
                 <p><a href={editLink}>{group.description}</a></p>
 
                 <h3>Requests</h3>
-                <a href="/groups/new_request">+ Request Donation</a>
+                {(group.requests) ? (
+                    <table border="1">
+                        <tr><th>Item</th><th>Request</th><th>Received</th><th>Promised</th><th>Left</th></tr>
+                    {group.requests.map((request) => {
+                        console.log("request: "+JSON.stringify(request))
+                        let link="/request/"+request.id;
+                        let reqQty = request.qty
+                        if ((request.units !== undefined) && (request.units != null)) { //todo: show and deduct received and promised, in columns
+                            reqQty += " " + request.units
+                        }
+                        return (<tr>
+                                <td><a href={link}>{request.title}</a></td>
+                                <td>{reqQty}</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                                <td>N/A</td>
+                            </tr>)
+                    })}
+                    </table>
+                ) : (
+                    <></>
+                )}
+                <a href="/requests/new">+ Request Donation</a>
 
                 <h3>Children</h3>
                 {(group.children) ? (

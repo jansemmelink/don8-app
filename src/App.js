@@ -8,10 +8,10 @@ import Login from "./pages/Login";
 import Reset from "./pages/Reset";
 import Logout from "./pages/Logout";
 import Home from './pages/Home';
-import Coordinator from './pages/Coordinator';
 import Group from './pages/Group';
 import AddGroup from "./pages/AddGroup";
 import EditGroup from "./pages/EditGroup";
+import AddRequest from "./pages/AddRequest";
 
 const Nav = () => {
   const [s,setSession] = useState(JSON.parse(localStorage.getItem("sessionObjStr")));
@@ -38,9 +38,6 @@ const Nav = () => {
           </>
           }
           {(s && s.user) && (<>
-            <li>
-              <Link to="/coordinator">Coordinator</Link>
-            </li>
             <li className="right">
               <Link to="/logout">Logout</Link>
             </li>
@@ -64,11 +61,11 @@ function App() {
 					<Route path="login" element={<Login />} />
 					<Route path="logout" element={<Logout />} />
 
-					<Route path="coordinator" element={<Coordinator />} />
-
 					<Route path="group/:id" element={<Group />} />
 					<Route path="group/edit/:id" element={<EditGroup />} />
 					<Route path="groups/new" element={<AddGroup />} />
+
+					<Route path="requests/new" element={<AddRequest />} />
           <Route path="*" element={<Home />} />
         </Route>
       </Routes>

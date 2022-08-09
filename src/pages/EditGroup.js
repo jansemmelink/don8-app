@@ -89,7 +89,6 @@ const EditGroup = () => {
                         id="description"
                         onChange={(e) => setDescription(e.target.value)}
                         value={description}
-                        required
                     />
                     <button type="submit">Update</button>
                 </form>

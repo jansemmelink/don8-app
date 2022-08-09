@@ -98,18 +98,9 @@ const AddGroup = () => {
                         id="description"
                         onChange={(e) => setDescription(e.target.value)}
                         value={description}
-                        required
                     />
                     <button>Create</button>
                 </form>
-                <p>
-                    <span className="line">
-                        <a href="/register">Register a new email address</a>
-                    </span>
-                    <span className="line">
-                        <a href="/reset">Reset your password</a>
-                    </span>
-                </p>
             </section>
         )
         };
