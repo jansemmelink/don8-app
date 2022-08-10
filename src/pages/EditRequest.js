@@ -1,14 +1,17 @@
-import React, {useState, useRef, useEffect} from 'react';
-import Group from './Group';
+import React, {useState, useRef, useEffect} from "react";
+import {Navigate, useParams} from "react-router-dom";
 
 import apiAddr from './api/api';
-const REQUESTS_ADD_URL = '/requests';
+const REQUEST_URL="/request"
 
-const AddRequest = () => {
-    const group = JSON.parse(localStorage.getItem("groupObjStr"));
+const EditRequest = () => {
+    const { id } = useParams();
+    const requestLink = "/request/"+id;
+
     const errRef = useRef();
 	const [errMsg, setErrMsg] = useState('');
 	const [success, setSuccess] = useState(false);
+    const [groupLink, setGroupLink] = useState({});
 
     //fields
     const titleRef = useRef();
@@ -26,23 +29,28 @@ const AddRequest = () => {
     const qtyRef = useRef();
     const [qty, setQty] = useState('');
 
-	useEffect(() => {
-        titleRef.current.focus();
+    useEffect(() => {
+        const init = JSON.parse(localStorage.getItem("requestObjStr"))
+        if (init && (id===init.id)) {
+            setTitle(init.title);
+            setDescription(init.description);
+            setTags(init.tags);
+            setQty(init.qty);
+            setUnits(init.units);
+            setGroupLink(init.group_id);
+        }
+		titleRef.current.focus();
 	}, []);
 
-	useEffect(() => {
-		setErrMsg('');
-	}, [title, description, tags, units, qty]);
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+    const handleSubmit = () => {
+        console.log("Submit update ...");
         const s = JSON.parse(localStorage.getItem("sessionObjStr"));
-		const reqBody = {group_id: group.id, title: title, description: description, tags: tags, units: units, qty: Number(qty)}
-        console.log("reqBody: "+JSON.stringify(reqBody));
-        fetch(apiAddr + REQUESTS_ADD_URL,
+        const reqBody = {id: id, title: title, description: description, tags: tags, units: units, qty: Number(qty)};
+        console.log("Submit update ..." + JSON.stringify(reqBody));
+        fetch(apiAddr + REQUEST_URL + "/"+id,
             {
-                method:"post",
-                headers:{
+                method: "put",
+                headers: {
                     "Content-Type":"application/json",
                     "Don8-Auth-Sid":s.id,
                 },
@@ -50,44 +58,31 @@ const AddRequest = () => {
             },
         )
         .then(resp => {
+            console.log("resp");
             if ((resp.status === 202) || (resp.status === 409)) {
 				return resp.json();
 			} else {
 				return {error:"Failed with "+resp.status + ":" + resp.statusText};
 			}
         })
-        .then((data) => {
-			console.log("data="+data);
-			if (data.error) {
-				setErrMsg(data.error);
-			} else {
-				setErrMsg('Requested');
-				setSuccess(true);
-			}
+        .then(data => {
+            console.log("updated: "+JSON.stringify(data))
+            setSuccess(true);
         })
         .catch(err => {
-            console.log("got exception")
-			setErrMsg('Request failed: '+err);
+            console.log("update failed: "+err)
+            setErrMsg(err)
         })
-	};
+    }
 
-    const groupLink = "/group/"+group.id;
     return (
         <>
         {success ? (
-            <Group/>
+            <Navigate to={groupLink}/>
         ) : (
             <section>
-                <p
-                    ref={errRef}
-                    className={errMsg ? 'errmsg' : 'offscreen'}
-                    aria-live="assertive"
-                >
-                    {errMsg}
-                </p>
-
-                <a href={groupLink}>{group.title}</a>
-                <h1>New Request</h1>
+                <p ref={errRef} className={errMsg ? 'errmsg' : 'offscreen'} aria-live="assertive">{errMsg}</p>
+                <h1>Request Editor</h1>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="title">Title:</label>
                     <input
@@ -141,12 +136,13 @@ const AddRequest = () => {
                         required
                     />
 
-                    <button>Request</button>
+                    <button type="submit">Update</button>
                 </form>
+                <a href={requestLink}>Back</a>
             </section>
-        )
-        };
+        )}
         </>
     );
 }
-export default AddRequest;
+
+export default EditRequest;

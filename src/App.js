@@ -11,7 +11,9 @@ import Home from './pages/Home';
 import Group from './pages/Group';
 import AddGroup from "./pages/AddGroup";
 import EditGroup from "./pages/EditGroup";
+import Request from "./pages/Request";
 import AddRequest from "./pages/AddRequest";
+import EditRequest from "./pages/EditRequest";
 
 const Nav = () => {
   const [s,setSession] = useState(JSON.parse(localStorage.getItem("sessionObjStr")));
@@ -65,6 +67,8 @@ function App() {
 					<Route path="group/edit/:id" element={<EditGroup />} />
 					<Route path="groups/new" element={<AddGroup />} />
 
+					<Route path="request/:id" element={<Request />} />
+					<Route path="request/edit/:id" element={<EditRequest />} />
 					<Route path="requests/new" element={<AddRequest />} />
           <Route path="*" element={<Home />} />
         </Route>

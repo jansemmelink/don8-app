@@ -1,3 +1,5 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+
 html {
 	font-family: 'Nunito', sans-serif;
 	font-size: 18px;
@@ -10,6 +12,55 @@ body {
     padding: 10px;
     min-height: 100vh;
 }
+
+
+.mobile-container {
+  max-width: 480px;
+  margin: auto;
+  background-color: #555;
+  height: 500px;
+  color: white;
+  border-radius: 10px;
+}
+
+.page_nav {
+  overflow: hidden;
+  background-color: #333;
+  position: relative;
+}
+
+.page_nav #myLinks {
+  display: none;
+}
+
+.page_nav a {
+  color: white;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+  display: block;
+}
+
+.page_nav a.icon {
+  background: black;
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.page_nav a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+
+
 
 ul.topnav {
   list-style-type: none;

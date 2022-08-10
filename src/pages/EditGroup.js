@@ -1,6 +1,5 @@
 import React, {useState, useRef, useEffect} from "react";
 import {Navigate, useParams} from "react-router-dom";
-import Group from "./Group";
 
 import apiAddr from './api/api';
 const GROUP_URL="/group"
